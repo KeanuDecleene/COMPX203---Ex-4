@@ -2,9 +2,8 @@
 .text
 
 main: #setup interrupts
-    sw $ra, 0($sp)
-    subui $sp, $sp, 1
-
+    sw $ra, terminate($0)
+    
     movsg $2, $cctrl    #copy the value of cctrl into $2 (getting control register)
     andi  $2, $2, 0xf   #disables all interrupts
     ori   $2, $2, 0xC2  #Enable IRQ2, IRQ3 and IE
@@ -152,8 +151,7 @@ record_Times: #print to Serial 2 formatted String
         
 
 button_Terminate: #button 2
-    addui $sp, $sp, 1
-    lw $ra, 0($sp)
+    lw $ra, terminate($0)
     jr $ra
 
 return_rfe:
@@ -170,3 +168,4 @@ old_vector: .word 0
 carriage: .word '\r'
 newline: .word '\n'
 period: .word '.'
+terminate: .word 0
